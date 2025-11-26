@@ -1,0 +1,80 @@
+/* Custom Colors - Replace Blue with #F6572D */
+
+/* Badge Colors */
+.badge-primary {
+    background-color: #F6572D !important;
+    color: white !important;
+}
+
+/* Button Colors */
+.btn-primary {
+    background-color: #F6572D !important;
+    border-color: #F6572D !important;
+    color: white !important;
+}
+
+.btn-primary:hover {
+    background-color: #e54a25 !important;
+    border-color: #e54a25 !important;
+}
+
+.btn-primary:focus {
+    background-color: #e54a25 !important;
+    border-color: #e54a25 !important;
+    box-shadow: 0 0 0 0.2rem rgba(246, 87, 45, 0.25) !important;
+}
+
+/* Text Colors */
+.text-primary {
+    color: #F6572D !important;
+}
+
+/* Background Colors */
+.bg-primary {
+    background-color: #F6572D !important;
+}
+
+/* Border Colors */
+.border-primary {
+    border-color: #F6572D !important;
+}
+
+/* Alert Colors */
+.alert-primary {
+    background-color: rgba(246, 87, 45, 0.1) !important;
+    border-color: #F6572D !important;
+    color: #F6572D !important;
+}
+
+/* Link Colors */
+a {
+    color: #F6572D;
+}
+
+a:hover {
+    color: #e54a25;
+}
+
+/* Project Links */
+.project-block .lower-content h4 a {
+    color: #F6572D;
+}
+
+.project-block .lower-content h4 a:hover {
+    color: #e54a25;
+}
+
+/* Section Titles */
+.sec-title-two h2 {
+    color: #F6572D;
+}
+
+/* CTA Button */
+.cta-section .btn-box a {
+    background-color: #F6572D;
+    color: white;
+}
+
+.cta-section .btn-box a:hover {
+    background-color: #e54a25;
+} 

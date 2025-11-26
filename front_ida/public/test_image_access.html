@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test d'accès aux images</title>
+</head>
+<body>
+    <h1>Test d'accès aux images</h1>
+    
+    <h2>Image directe via URL complète:</h2>
+    <img src="http://127.0.0.1:8000/storage/news/news_26-05-2025_19-57-00.jpeg" 
+         alt="Test image directe" 
+         style="max-width: 300px; border: 1px solid #ccc;">
+    
+    <h2>Image via chemin relatif:</h2>
+    <img src="/storage/news/news_26-05-2025_19-57-00.jpeg" 
+         alt="Test image relative" 
+         style="max-width: 300px; border: 1px solid #ccc;">
+    
+    <h2>Image via storage:</h2>
+    <img src="storage/news/news_26-05-2025_19-57-00.jpeg" 
+         alt="Test image storage" 
+         style="max-width: 300px; border: 1px solid #ccc;">
+    
+    <h2>Test avec JavaScript:</h2>
+    <div id="image-test"></div>
+    
+    <script>
+        // Test d'accès aux images
+        const imageUrl = 'http://127.0.0.1:8000/storage/news/news_26-05-2025_19-57-00.jpeg';
+        
+        fetch(imageUrl)
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('image-test').innerHTML = 
+                        '<p style="color: green;">✅ Image accessible!</p>' +
+                        '<img src="' + imageUrl + '" style="max-width: 300px; border: 1px solid #ccc;">';
+                } else {
+                    document.getElementById('image-test').innerHTML = 
+                        '<p style="color: red;">❌ Image non accessible (Status: ' + response.status + ')</p>';
+                }
+            })
+            .catch(error => {
+                document.getElementById('image-test').innerHTML = 
+                    '<p style="color: red;">❌ Erreur: ' + error.message + '</p>';
+            });
+    </script>
+</body>
+</html>
