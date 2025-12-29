@@ -19,10 +19,10 @@ class PageController extends Controller
 {
     public function index()
     {
-        $all_news = news::orderBy('created_at', 'desc')->paginate(10);
+        $all_news = news::orderBy('created_at', 'desc')->take(8)->get();
         $slider_image = Slider::orderBy('created_at', 'desc')->get();
         $latestProjects = Project::with('media')->orderBy('created_at', 'desc')->take(3)->get();
-        $countries = Country::all(); 
+        $countries = Country::all();
         $events = Event::orderBy('start_date')->limit(5)->get(); // Limite à 5 événements pour éviter un chargement excessif
         $ourStories = OurStory::where('is_active', true)->orderBy('order')->get();
         $sectionObamas = SectionObama::where('is_active', true)->orderBy('order')->get();

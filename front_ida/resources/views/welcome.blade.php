@@ -44,7 +44,6 @@
                     <div class="row align-items-center clearfix">
                         <div class="col-lg-6 col-md-12 col-sm-12 mb-4 mb-lg-0">
                             <div>
-                                <div class="eyebrow">A propos de nous</div>
                                 @if ($section->title)
                                     <h1 class="about-hero-title">{{ $section->title }}</h1>
                                 @endif
@@ -139,39 +138,48 @@
                 </div>
                 <div class="btn-box pull-right"><a href="/news">Voir plus</a></div>
             </div>
-            <div class="row clearfix">
+            <div class="news-grid-container">
+                @php
+                    $firstRowNews = $all_news->take(4);
+                    $secondRowNews = $all_news->skip(4)->take(4);
+                @endphp
 
-                <div class="col-lg-12 col-md-6 col-sm-12 big-column">
-                    <div class="right-block">
-                        <div class="row clearfix">
-                            @foreach ($all_news as $news)
-                                <div class="col-lg-3 col-md-6 col-sm-12 news-block">
-                                    <div class="news-block-one wow fadeInUp animated animated" data-wow-delay="600ms"
-                                        data-wow-duration="1500ms">
-                                        <div class="inner-box">
-                                            <figure class="image-box"><a href="/detail_news/{{ $news->id }}"><img
-                                                        style="height: 280px;" src="{{ '/public/storage/' . $news->image }}"
-                                                        alt=""></a></figure>
-                                            <div class="lower-content">
-                                                <ul class="post-info">
-
-                                                    <li>{{ ucfirst(\Carbon\Carbon::parse($news->published_at)->locale('fr')->translatedFormat('F j, Y')) }}
-                                                    </li>
-                                                </ul>
-                                                <h3><a href="/detail_news/{{ $news->id }}">{{ $news->title }}</a>
-                                                </h3>
-                                                <p>{{ Str::limit($news->content, 50, '...') }}</p>
-                                                <div class="link"><a href="/detail_news/{{ $news->id }}"><i
-                                                            class="fas fa-arrow-right"></i><span>En savoir plus</span></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                <!-- Première ligne - 4 nouvelles -->
+                <div class="news-row">
+                    @foreach ($firstRowNews as $news)
+                        <div class="news-block-compact">
+                            <div class="inner-box">
+                                <figure class="image-box">
+                                    <a href="/detail_news/{{ $news->id }}">
+                                        <img style="height: 200px;" src="{{ asset('storage/' . $news->image) }}"
+                                            alt="">
+                                    </a>
+                                </figure>
+                                <div class="lower-content">
+                                    <h3><a href="/detail_news/{{ $news->id }}">{{ $news->title }}</a></h3>
                                 </div>
-                            @endforeach
-
+                            </div>
                         </div>
-                    </div>
+                    @endforeach
+                </div>
+
+                <!-- Deuxième ligne - 4 nouvelles -->
+                <div class="news-row">
+                    @foreach ($secondRowNews as $news)
+                        <div class="news-block-compact">
+                            <div class="inner-box">
+                                <figure class="image-box">
+                                    <a href="/detail_news/{{ $news->id }}">
+                                        <img style="height: 200px;" src="{{ asset('storage/' . $news->image) }}"
+                                            alt="">
+                                    </a>
+                                </figure>
+                                <div class="lower-content">
+                                    <h3><a href="/detail_news/{{ $news->id }}">{{ $news->title }}</a></h3>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -179,55 +187,471 @@
 
 
     <!-- b2b-section -->
-    <section class="project-style-two">
+    <section class="events-hero-section">
         <div class="auto-container">
-            <div class="sec-title style-three centred">
-                <h5>Événements à venir</h5>
-                <h2>Participez à nos événements</h2>
+            <div class="section-header-events">
+                <div class="section-badge-events">Événements</div>
+                <h2 class="section-title-events">Participez à nos événements</h2>
+                <p class="section-subtitle-events">Découvrez nos prochains rendez-vous et opportunités de networking</p>
             </div>
-            <div class="project-carousel-2 owl-carousel owl-theme owl-nav-none">
-                @if (isset($events) && $events->isNotEmpty())
-                    @foreach ($events as $event)
-                        <div class="project-inner">
-                            <div class="inner-box">
-                                <figure class="image-box">
-                                    <img src="{{ $event->image ? asset('storage/' . $event->image) : asset('assets/images/b2b/1.png') }}"
-                                        alt="{{ $event->title }}"
-                                        style="max-width: 600px; max-height: 400px; width: 100%; height: auto;">
-                                </figure>
-                                <div class="content-box">
-                                    <span>{{ $event->location }}</span>
-                                    <h3>{{ $event->title }}</h3>
-                                    <p>
-                                        {{ \Carbon\Carbon::parse($event->start_date)->format('d/m/Y H:i') }}
-                                        -
-                                        {{ $event->end_date ? \Carbon\Carbon::parse($event->end_date)->format('d/m/Y H:i') : 'TBD' }}<br>
-                                        {{ Str::limit($event->description, 100) }}
-                                    </p>
-                                    <a href="{{ route('events.show', $event->id) }}">
-                                        <i class="fas fa-arrow-right"></i><span>Voir les détails</span>
-                                    </a>
+
+            <div class="events-showcase-wrapper">
+                <div class="project-carousel-2 owl-carousel owl-theme owl-nav-none">
+                    @if (isset($events) && $events->isNotEmpty())
+                        @foreach ($events as $event)
+                            <div class="event-showcase-card">
+                                <div class="event-showcase-inner">
+                                    <!-- Image principale mise en valeur -->
+                                    <div class="event-hero-image">
+                                        <img src="{{ $event->image ? asset('storage/' . $event->image) : asset('assets/images/b2b/1.png') }}"
+                                            alt="{{ $event->title }}">
+                                        <div class="image-gradient-overlay"></div>
+                                        <!-- Badge date avec accent orange -->
+                                        <div class="event-date-badge-orange">
+                                            <div class="date-number">
+                                                {{ \Carbon\Carbon::parse($event->start_date)->format('d') }}</div>
+                                            <div class="date-text">
+                                                {{ \Carbon\Carbon::parse($event->start_date)->format('M Y') }}</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Contenu avec accent orange -->
+                                    <div class="event-hero-content">
+                                        <div class="event-category-badge">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <span>Événement</span>
+                                        </div>
+                                        <h3 class="event-hero-title">{{ $event->title }}</h3>
+                                        <div class="event-info-row">
+                                            <div class="info-item">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                <span>{{ $event->location }}</span>
+                                            </div>
+                                            <div class="info-item">
+                                                <i class="far fa-clock"></i>
+                                                <span>{{ \Carbon\Carbon::parse($event->start_date)->format('d/m/Y à H:i') }}</span>
+                                            </div>
+                                        </div>
+                                        <p class="event-hero-description">{{ Str::limit($event->description, 150) }}</p>
+                                        <a href="https://nourdignagrimarket.com/fr/" class="event-cta-button"
+                                            target="_blank">
+                                            <span>S'inscrire</span>
+                                            <i class="fas fa-external-link-alt"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="event-showcase-card">
+                            <div class="event-showcase-inner">
+                                <div class="event-hero-image">
+                                    <img src="{{ asset('assets/images/b2b/1.png') }}" alt="Aucun événement">
+                                    <div class="image-gradient-overlay"></div>
+                                </div>
+                                <div class="event-hero-content">
+                                    <div class="event-category-badge">
+                                        <i class="fas fa-info-circle"></i>
+                                        <span>Information</span>
+                                    </div>
+                                    <h3 class="event-hero-title">Aucun événement à venir</h3>
+                                    <p class="event-hero-description">Revenez bientôt pour découvrir nos prochains
+                                        événements !</p>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
-                @else
-                    <div class="project-inner">
-                        <div class="inner-box">
-                            <figure class="image-box">
-                                <img src="{{ asset('assets/images/b2b/1.png') }}" alt="Aucun événement">
-                            </figure>
-                            <div class="content-box">
-                                <span>Information</span>
-                                <h3>Aucun événement à venir</h3>
-                                <p>Revenez bientôt pour découvrir nos prochains événements !</p>
-                            </div>
-                        </div>
-                    </div>
-                @endif
+                    @endif
+                </div>
             </div>
         </div>
     </section>
+
+    <style>
+        /* Section principale avec accent orange */
+        .events-hero-section {
+            padding: 100px 0;
+            background: #ffffff;
+            position: relative;
+        }
+
+        .events-hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #F38C1F, transparent);
+        }
+
+        /* En-tête de section */
+        .section-header-events {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .section-badge-events {
+            display: inline-block;
+            padding: 10px 24px;
+            background: #F38C1F;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(243, 140, 31, 0.3);
+        }
+
+        .section-title-events {
+            font-size: 48px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin: 0 0 18px 0;
+            line-height: 1.2;
+        }
+
+        .section-subtitle-events {
+            font-size: 18px;
+            color: #666666;
+            margin: 0;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        /* Wrapper du carousel */
+        .events-showcase-wrapper {
+            position: relative;
+            padding: 30px 0;
+        }
+
+        .event-showcase-card {
+            padding: 0 15px;
+        }
+
+        /* Carte principale - Image mise en valeur */
+        .event-showcase-inner {
+            background: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .event-showcase-inner:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 50px rgba(243, 140, 31, 0.2);
+        }
+
+        /* Image principale - Grande taille mise en valeur */
+        .event-hero-image {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            overflow: hidden;
+            background: #f5f5f5;
+        }
+
+        .event-hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .event-showcase-inner:hover .event-hero-image img {
+            transform: scale(1.08);
+        }
+
+        /* Overlay avec accent orange */
+        .image-gradient-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60%;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.5) 100%);
+            z-index: 1;
+        }
+
+        /* Badge date avec accent orange */
+        .event-date-badge-orange {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            background: #F38C1F;
+            border-radius: 12px;
+            padding: 16px 20px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(243, 140, 31, 0.4);
+            z-index: 3;
+            min-width: 80px;
+        }
+
+        .date-number {
+            display: block;
+            font-size: 36px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .date-text {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.95;
+        }
+
+        /* Contenu de la carte */
+        .event-hero-content {
+            padding: 35px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+        }
+
+        /* Badge catégorie */
+        .event-category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: rgba(243, 140, 31, 0.1);
+            color: #F38C1F;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 4px;
+            margin-bottom: 18px;
+            width: fit-content;
+        }
+
+        .event-category-badge i {
+            font-size: 11px;
+        }
+
+        /* Titre */
+        .event-hero-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin: 0 0 20px 0;
+            line-height: 1.3;
+            transition: color 0.3s ease;
+        }
+
+        .event-showcase-inner:hover .event-hero-title {
+            color: #F38C1F;
+        }
+
+        /* Informations (lieu et date) */
+        .event-info-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .info-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #666666;
+            font-weight: 500;
+        }
+
+        .info-item i {
+            color: #F38C1F;
+            font-size: 14px;
+        }
+
+        /* Description */
+        .event-hero-description {
+            font-size: 15px;
+            color: #666666;
+            line-height: 1.8;
+            margin: 0 0 25px 0;
+            flex-grow: 1;
+        }
+
+        /* Bouton CTA avec accent orange */
+        .event-cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: #F38C1F;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 15px;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            width: fit-content;
+            box-shadow: 0 4px 15px rgba(243, 140, 31, 0.3);
+        }
+
+        .event-cta-button:hover {
+            background: #e67d1a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(243, 140, 31, 0.4);
+            color: #ffffff;
+        }
+
+        .event-cta-button i {
+            transition: transform 0.3s ease;
+        }
+
+        .event-cta-button:hover i {
+            transform: translateX(5px);
+        }
+
+        /* Navigation du carousel avec accent orange */
+        .events-hero-section .owl-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 50px;
+        }
+
+        .events-hero-section .owl-nav button {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #ffffff !important;
+            color: #F38C1F !important;
+            border: 2px solid #F38C1F !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px !important;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(243, 140, 31, 0.15);
+        }
+
+        .events-hero-section .owl-nav button:hover {
+            background: #F38C1F !important;
+            color: #ffffff !important;
+            border-color: #F38C1F !important;
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(243, 140, 31, 0.4);
+        }
+
+        /* Dots du carousel */
+        .events-hero-section .owl-dots {
+            text-align: center;
+            margin-top: 35px;
+        }
+
+        .events-hero-section .owl-dots button.owl-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e0e0e0 !important;
+            margin: 0 6px;
+            transition: all 0.3s ease;
+        }
+
+        .events-hero-section .owl-dots button.owl-dot.active {
+            background: #F38C1F !important;
+            width: 32px;
+            border-radius: 6px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 991.98px) {
+            .events-hero-section {
+                padding: 80px 0;
+            }
+
+            .section-title-events {
+                font-size: 38px;
+            }
+
+            .section-subtitle-events {
+                font-size: 16px;
+            }
+
+            .event-hero-image {
+                height: 380px;
+            }
+
+            .event-hero-content {
+                padding: 28px;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .events-hero-section {
+                padding: 60px 0;
+            }
+
+            .section-header-events {
+                margin-bottom: 50px;
+            }
+
+            .section-title-events {
+                font-size: 32px;
+            }
+
+            .section-subtitle-events {
+                font-size: 15px;
+            }
+
+            .event-hero-image {
+                height: 320px;
+            }
+
+            .event-date-badge-orange {
+                top: 15px;
+                left: 15px;
+                padding: 12px 16px;
+            }
+
+            .date-number {
+                font-size: 28px;
+            }
+
+            .date-text {
+                font-size: 10px;
+            }
+
+            .event-hero-content {
+                padding: 24px;
+            }
+
+            .event-hero-title {
+                font-size: 24px;
+            }
+
+            .event-info-row {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .event-cta-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
 
     <!-- b2b-section end -->
 
@@ -241,57 +665,80 @@
             <div class="title-inner clearfix">
                 <div class="sec-title style-four right pull-left">
                     <h5>À propos</h5>
-                    <h2>Our Story</h2>
+                    <h2>IDA Top Level Meetings - IDA International</h2>
                 </div>
             </div>
             @if (isset($ourStories) && $ourStories->isNotEmpty())
                 @php
-                    $storyChunks = $ourStories->chunk(3);
+                    $storyChunks = $ourStories->chunk(5);
+                    $firstRow = $storyChunks->first();
+                    $secondRow = $storyChunks->skip(1)->first();
                 @endphp
-                <div class="owl-carousel owl-theme our-story-carousel">
-                    @foreach ($storyChunks as $storyGroup)
-                        <div class="our-story-slide">
-                            <div class="our-story-slide-inner">
-                                @foreach ($storyGroup as $story)
-                                    <div class="our-story-card">
-                                        <div class="story-image-wrapper">
-                                            <img src="{{ $story->image ? asset('storage/' . $story->image) : asset('assets/images/placeholder.png') }}"
-                                                alt="{{ $story->title }}">
-                                        </div>
-                                        <div class="story-content">
-                                            <h3>{{ $story->title }}</h3>
-                                            <p>{{ Str::limit($story->description, 80) }}</p>
-                                        </div>
+                <div class="our-story-grid-container">
+                    <!-- Première ligne - 5 images -->
+                    @if ($firstRow)
+                        <div class="our-story-row">
+                            @foreach ($firstRow as $story)
+                                <div class="our-story-card">
+                                    <div class="story-image-wrapper">
+                                        <img src="{{ $story->image ? asset('storage/' . $story->image) : asset('assets/images/placeholder.png') }}"
+                                            alt="{{ $story->title }}">
                                     </div>
-                                @endforeach
-                                @for ($i = $storyGroup->count(); $i < 3; $i++)
-                                    <div class="our-story-card placeholder-card">
-                                        <div class="story-image-wrapper">
-                                            <img src="{{ asset('assets/images/placeholder.png') }}" alt="Placeholder">
-                                        </div>
-                                        <div class="story-content">
-                                            <h3>À venir</h3>
-                                            <p>De nouvelles histoires seront ajoutées prochainement.</p>
-                                        </div>
+                                </div>
+                            @endforeach
+                            @for ($i = $firstRow->count(); $i < 5; $i++)
+                                <div class="our-story-card placeholder-card">
+                                    <div class="story-image-wrapper">
+                                        <img src="{{ asset('assets/images/placeholder.png') }}" alt="Placeholder">
                                     </div>
-                                @endfor
-                            </div>
+                                </div>
+                            @endfor
                         </div>
-                    @endforeach
+                    @endif
+
+                    <!-- Deuxième ligne - 5 images -->
+                    @if ($secondRow)
+                        <div class="our-story-row">
+                            @foreach ($secondRow as $story)
+                                <div class="our-story-card">
+                                    <div class="story-image-wrapper">
+                                        <img src="{{ $story->image ? asset('storage/' . $story->image) : asset('assets/images/placeholder.png') }}"
+                                            alt="{{ $story->title }}">
+                                    </div>
+                                </div>
+                            @endforeach
+                            @for ($i = $secondRow->count(); $i < 5; $i++)
+                                <div class="our-story-card placeholder-card">
+                                    <div class="story-image-wrapper">
+                                        <img src="{{ asset('assets/images/placeholder.png') }}" alt="Placeholder">
+                                    </div>
+                                </div>
+                            @endfor
+                        </div>
+                    @endif
                 </div>
             @else
-                <div class="our-story-placeholder">
-                    @for ($i = 0; $i < 3; $i++)
-                        <div class="our-story-card placeholder-card">
-                            <div class="story-image-wrapper">
-                                <img src="{{ asset('assets/images/placeholder.png') }}" alt="Placeholder">
+                <div class="our-story-grid-container">
+                    <!-- Première ligne vide -->
+                    <div class="our-story-row">
+                        @for ($i = 0; $i < 5; $i++)
+                            <div class="our-story-card placeholder-card">
+                                <div class="story-image-wrapper">
+                                    <img src="{{ asset('assets/images/placeholder.png') }}" alt="Placeholder">
+                                </div>
                             </div>
-                            <div class="story-content">
-                                <h3>À venir</h3>
-                                <p>De nouvelles histoires seront ajoutées prochainement.</p>
+                        @endfor
+                    </div>
+                    <!-- Deuxième ligne vide -->
+                    <div class="our-story-row">
+                        @for ($i = 0; $i < 5; $i++)
+                            <div class="our-story-card placeholder-card">
+                                <div class="story-image-wrapper">
+                                    <img src="{{ asset('assets/images/placeholder.png') }}" alt="Placeholder">
+                                </div>
                             </div>
-                        </div>
-                    @endfor
+                        @endfor
+                    </div>
                 </div>
             @endif
         </div>
@@ -558,8 +1005,17 @@
             z-index: 2;
         }
 
-        .our-story-carousel {
-            position: relative;
+        .our-story-grid-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .our-story-row {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .our-story-card,
@@ -567,18 +1023,16 @@
             background: #ffffff;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            flex: 1 1 calc(33.333% - 20px);
-            max-width: 350px;
+            flex: 0 0 calc(20% - 12px);
+            max-width: calc(20% - 12px);
+            min-width: 180px;
         }
 
         .our-story-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
         }
 
         .story-image-wrapper {
@@ -596,82 +1050,78 @@
             object-fit: cover;
         }
 
-        .story-content {
-            padding: 24px;
-            text-align: center;
-            flex-grow: 1;
+        /* Styles pour la grille de nouvelles compacte */
+        .news-grid-container {
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
         }
 
-        .story-content h3 {
-            font-size: 1.1rem;
+        .news-row {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .news-block-compact {
+            flex: 0 0 calc(25% - 11.25px);
+            max-width: calc(25% - 11.25px);
+            min-width: 200px;
+        }
+
+        .news-block-compact .inner-box {
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+        }
+
+        .news-block-compact .inner-box:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+        }
+
+        .news-block-compact .image-box {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-block-compact .image-box img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .news-block-compact .inner-box:hover .image-box img {
+            transform: scale(1.05);
+        }
+
+        .news-block-compact .lower-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .news-block-compact .lower-content h3 {
+            font-size: 1rem;
             font-weight: 600;
             color: #2c3e50;
-            margin-bottom: 10px;
-        }
-
-        .story-content p {
-            font-size: 0.95rem;
-            color: #5a6c7d;
             margin: 0;
+            line-height: 1.4;
         }
 
-        .our-story-carousel .owl-stage-outer {
-            padding: 10px 0;
+        .news-block-compact .lower-content h3 a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.3s ease;
         }
 
-        .our-story-slide {
-            padding: 15px;
-        }
-
-        .our-story-slide-inner {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .our-story-carousel .owl-nav {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .our-story-carousel .owl-nav button {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: #f1f3f5 !important;
-            color: #2c3e50 !important;
-            border: 1px solid #d1d9e6;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem !important;
-            transition: all 0.3s ease;
-        }
-
-        .our-story-carousel .owl-nav button:hover {
-            background: #2c3e50 !important;
-            color: #ffffff !important;
-            border-color: #2c3e50;
-        }
-
-        .our-story-carousel .owl-nav button span {
-            font-size: 1.5rem;
-            line-height: 1;
-        }
-
-        .our-story-carousel .owl-nav button.disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        .our-story-carousel .owl-dots {
-            justify-content: center;
-            margin-top: 15px;
+        .news-block-compact .lower-content h3 a:hover {
+            color: #f3c56a;
         }
 
         /* Responsive design */
@@ -711,6 +1161,28 @@
             .our-story-placeholder {
                 flex-direction: column;
                 align-items: center;
+            }
+
+            .news-row {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .news-block-compact {
+                flex: 0 0 100%;
+                max-width: 100%;
+                min-width: unset;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .news-row {
+                gap: 10px;
+            }
+
+            .news-block-compact {
+                flex: 0 0 calc(50% - 5px);
+                max-width: calc(50% - 5px);
             }
         }
     </style>
@@ -807,18 +1279,6 @@
                     }
                 });
 
-                var storySlideCount = $('.our-story-carousel .our-story-slide').length;
-                $('.our-story-carousel').owlCarousel({
-                    loop: storySlideCount > 1,
-                    margin: 30,
-                    nav: true,
-                    dots: true,
-                    autoplay: true,
-                    autoplayHoverPause: true,
-                    items: 1,
-                    slideBy: 1,
-                    navText: ['<span>&#10094;</span>', '<span>&#10095;</span>']
-                });
             } else {
                 console.warn('jQuery ou Owl Carousel non chargé(s). Vérifiez l’inclusion des scripts.');
             }
